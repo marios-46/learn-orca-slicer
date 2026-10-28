@@ -1,0 +1,1547 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>What Is Orca Slicer? A Beginner’s Guide</title>
+  <meta name="description" content="Learn what Orca Slicer is, how 3D slicing works, which settings beginners should understand, and how to prepare your first 3D print.">
+  <meta name="keywords" content="Orca Slicer, 3D printing slicer, beginner 3D printing guide, G-code, printer profiles, filament settings, 3D model slicing, 3D printing software">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Editorial Team">
+  <meta name="theme-color" content="#172d4d">
+
+  <style>
+    :root {
+      --navy: #172d4d;
+      --navy-light: #25466c;
+      --blue: #3276d2;
+      --blue-light: #eaf2ff;
+      --orange: #ff9f43;
+      --orange-light: #fff2e3;
+      --background: #f3f6fa;
+      --surface: #ffffff;
+      --text: #243247;
+      --muted: #68778b;
+      --border: #dce4ee;
+      --green: #16876b;
+      --green-light: #e6f7f0;
+      --shadow: 0 12px 35px rgba(23, 45, 77, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    a {
+      color: #2368ba;
+      overflow-wrap: anywhere;
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: #d66c13;
+    }
+
+    .site-header {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .header-inner {
+      max-width: 1160px;
+      margin: auto;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.4px;
+    }
+
+    .header-label {
+      color: #c7d8ee;
+      font-size: 13px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 90% 15%, rgba(255,159,67,.24), transparent 26%),
+        radial-gradient(circle at 10% 100%, rgba(50,118,210,.30), transparent 32%),
+        linear-gradient(135deg, #172d4d, #25466c);
+      color: #fff;
+      padding: 76px 22px 88px;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.5fr .8fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 17px;
+      padding: 7px 13px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 30px;
+      background: rgba(255,255,255,.07);
+      color: #ffd4a4;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0 0 20px;
+      font-size: clamp(36px, 5vw, 60px);
+      line-height: 1.12;
+      letter-spacing: -1.8px;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 0;
+      color: #d9e5f2;
+      font-size: 18px;
+    }
+
+    .hero-visual {
+      display: flex;
+      min-height: 250px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .printer-card {
+      position: relative;
+      width: 230px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 22px;
+      background: rgba(255,255,255,.09);
+      box-shadow: 0 25px 55px rgba(0,0,0,.15);
+      transform: rotate(3deg);
+    }
+
+    .printer-frame {
+      position: relative;
+      height: 155px;
+      border: 5px solid #d8e5f4;
+      border-bottom: 8px solid #d8e5f4;
+      border-radius: 9px;
+    }
+
+    .printer-rail {
+      position: absolute;
+      top: 31px;
+      left: 15px;
+      right: 15px;
+      height: 6px;
+      border-radius: 5px;
+      background: var(--orange);
+    }
+
+    .printer-head {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      width: 29px;
+      height: 24px;
+      border-radius: 5px;
+      background: #ffbf77;
+      transform: translateX(-50%);
+    }
+
+    .print-bed {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      height: 6px;
+      background: #8da7c8;
+    }
+
+    .printed-object {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      width: 68px;
+      height: 48px;
+      background: linear-gradient(135deg, #ffb15d, #f18b32);
+      clip-path: polygon(50% 0, 100% 25%, 100% 100%, 0 100%, 0 25%);
+      transform: translateX(-50%);
+    }
+
+    .printer-caption {
+      margin-top: 15px;
+      color: #e5effa;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .page-wrap {
+      position: relative;
+      max-width: 1160px;
+      margin: -32px auto 60px;
+      padding: 0 22px;
+    }
+
+    .quick-answer {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--orange);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .answer-icon {
+      display: flex;
+      width: 54px;
+      height: 54px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: var(--orange-light);
+      color: #a6530a;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .quick-answer h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .quick-answer p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .content-layout {
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+      margin-top: 32px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 18px;
+      padding: 23px;
+      border-radius: 15px;
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .toc h2 {
+      margin: 0 0 13px;
+      font-size: 18px;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 7px 0;
+      color: #b8cce3;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .toc a {
+      color: #e0eaf7;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      color: #ffbd79;
+    }
+
+    article {
+      min-width: 0;
+      padding: 36px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    article h2 {
+      margin: 46px 0 14px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5edf7;
+      color: var(--navy);
+      font-size: clamp(25px, 3vw, 32px);
+      line-height: 1.3;
+      letter-spacing: -.5px;
+    }
+
+    article h2:first-child {
+      margin-top: 0;
+    }
+
+    article h3 {
+      margin: 27px 0 9px;
+      color: var(--navy-light);
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    article p {
+      margin: 14px 0;
+    }
+
+    .info-box {
+      margin: 23px 0;
+      padding: 21px 23px;
+      border: 1px solid #cfe0fb;
+      border-left: 5px solid var(--blue);
+      border-radius: 12px;
+      background: var(--blue-light);
+    }
+
+    .info-box strong {
+      color: var(--navy);
+    }
+
+    .warning-box {
+      margin: 22px 0;
+      padding: 20px 22px;
+      border: 1px solid #f6d8b7;
+      border-radius: 12px;
+      background: var(--orange-light);
+    }
+
+    .warning-box strong {
+      color: #a6530a;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 15px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fbfcfe;
+    }
+
+    .step-number {
+      display: flex;
+      width: 42px;
+      height: 42px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+      margin: 24px 0;
+    }
+
+    .feature {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #fcfdff;
+    }
+
+    .feature-icon {
+      display: inline-flex;
+      width: 39px;
+      height: 39px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      border-radius: 11px;
+      background: var(--orange-light);
+      color: #a6530a;
+      font-weight: 900;
+    }
+
+    .feature h3 {
+      margin: 0 0 7px;
+      font-size: 18px;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .table-wrap {
+      margin: 23px 0;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 14px 15px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8faff;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mini-workflow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 25px 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: #f8faff;
+    }
+
+    .workflow-item {
+      min-width: 115px;
+      padding: 13px 14px;
+      border-radius: 10px;
+      background: var(--navy);
+      color: #fff;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .workflow-arrow {
+      color: var(--orange);
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .faq-item {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-item h3 {
+      margin: 0 0 7px;
+      font-size: 18px;
+    }
+
+    .faq-item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .final-box {
+      margin-top: 35px;
+      padding: 28px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #172d4d, #25466c);
+      color: #fff;
+    }
+
+    .final-box h2 {
+      margin-top: 0;
+      border: 0;
+      color: #ffd4a4;
+    }
+
+    .final-box p {
+      color: #dce7f5;
+    }
+
+    .site-footer {
+      padding: 30px 20px;
+      background: #12233c;
+      color: #b8c9dd;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .site-footer p {
+      max-width: 850px;
+      margin: 7px auto;
+    }
+
+    @media (max-width: 850px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 200px;
+      }
+
+      .content-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+
+      .toc ol {
+        columns: 2;
+        column-gap: 25px;
+      }
+
+      article {
+        padding: 28px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .hero {
+        padding: 48px 17px 68px;
+      }
+
+      h1 {
+        letter-spacing: -.8px;
+      }
+
+      .page-wrap {
+        padding: 0 12px;
+      }
+
+      .quick-answer {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      article {
+        padding: 21px 17px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .toc ol {
+        columns: 1;
+      }
+
+      .step {
+        grid-template-columns: 36px 1fr;
+        padding: 14px;
+      }
+
+      .step-number {
+        width: 35px;
+        height: 35px;
+      }
+
+      .workflow-arrow {
+        display: none;
+      }
+
+      .workflow-item {
+        width: 100%;
+      }
+
+      th, td {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="https://orcasslicer.com/">3D Printing Guide</a>
+      <span class="header-label">Beginner Resources · Slicing · Printer Setup</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Beginner's learning guide</span>
+        <h1>What Is Orca Slicer? A Beginner’s Guide to 3D Printing</h1>
+        <p>
+          Learn how slicing software transforms a digital model into
+          printable instructions, understand the settings that matter,
+          and discover a practical workflow for preparing your first print.
+        </p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="printer-card">
+          <div class="printer-frame">
+            <div class="printer-rail"></div>
+            <div class="printer-head"></div>
+            <div class="printed-object"></div>
+            <div class="print-bed"></div>
+          </div>
+          <div class="printer-caption">From digital model to physical object</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="page-wrap">
+
+    <section class="quick-answer">
+      <div class="answer-icon">3D</div>
+      <div>
+        <h2>What is Orca Slicer?</h2>
+        <p>
+          Orca Slicer is free, open-source slicing software for preparing
+          models for FDM and FFF 3D printers. It converts a three-dimensional
+          model into layer-by-layer instructions, usually G-code, that a
+          compatible printer can interpret. Users can configure printer
+          profiles, filament properties, supports, print speed, layer height,
+          and other settings before producing a print file.
+        </p>
+      </div>
+    </section>
+
+    <div class="content-layout">
+
+      <nav class="toc" aria-label="Table of contents">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#slicer">What is a slicer?</a></li>
+          <li><a href="#workflow">How the software works</a></li>
+          <li><a href="#features">Main features</a></li>
+          <li><a href="#installation">Installation and setup</a></li>
+          <li><a href="#first-print">Prepare your first print</a></li>
+          <li><a href="#settings">Important settings</a></li>
+          <li><a href="#materials">Filaments and materials</a></li>
+          <li><a href="#calibration">Calibration basics</a></li>
+          <li><a href="#advantages">Benefits and limitations</a></li>
+          <li><a href="#mistakes">Beginner mistakes</a></li>
+          <li><a href="#faq">FAQs</a></li>
+        </ol>
+      </nav>
+
+      <article>
+
+        <section id="introduction">
+          <h2>1. Introduction to Orca Slicer</h2>
+
+          <p>
+            Three-dimensional printing allows people to turn digital designs
+            into physical objects. Hobbyists use it to make decorative items,
+            replacement parts, prototypes, models, organisers, and educational
+            projects. However, a 3D printer generally cannot take a design
+            file and immediately produce the finished object. It needs a
+            set of instructions describing how the object should be built.
+          </p>
+
+          <p>
+            This is where slicing software becomes important.
+            <a href="https://orcasslicer.com/" target="_blank" rel="noopener noreferrer">Orca Slicer</a>
+            is a tool used to prepare digital models for compatible 3D printers.
+            It provides a workspace for importing designs, selecting printer
+            and filament profiles, adjusting print settings, inspecting layers,
+            and generating instructions for the machine.
+          </p>
+
+          <p>
+            The software is useful for beginners who want to learn the
+            relationship between digital designs and physical prints. It also
+            provides advanced controls for users who want to fine-tune print
+            quality, speed, material usage, and other characteristics.
+            Beginners do not need to understand every setting immediately.
+            Learning the basic workflow first is a more manageable approach.
+          </p>
+
+          <div class="info-box">
+            <strong>Beginner tip:</strong> Start with a supported printer
+            profile and suitable filament preset. Once you can prepare and
+            complete a basic print successfully, experiment with individual
+            settings rather than changing many values at once.
+          </div>
+        </section>
+
+        <section id="slicer">
+          <h2>2. What Is a 3D Printing Slicer?</h2>
+
+          <p>
+            A 3D printing slicer is software that converts a three-dimensional
+            model into instructions a printer can follow. The term "slicing"
+            refers to dividing the model into many thin horizontal layers.
+            The software calculates the paths required to build each layer,
+            including the outer walls, internal structure, and any necessary
+            support material.
+          </p>
+
+          <p>
+            During this process, the slicer also uses information about the
+            printer and the selected material. These settings can determine
+            the nozzle and bed temperatures, movement speeds, extrusion
+            amounts, cooling behaviour, and other printing instructions.
+            The exact options depend on the machine, material, and software
+            configuration.
+          </p>
+
+          <h3>Why can't a printer use every model file directly?</h3>
+
+          <p>
+            A model file primarily describes the geometry of an object.
+            It may tell the software where surfaces and shapes are located,
+            but it does not necessarily provide all the machine movements
+            and material instructions needed to print that object. The
+            slicer translates the geometry and selected settings into a
+            suitable manufacturing plan.
+          </p>
+
+          <p>
+            For example, a digital model of a small storage box describes
+            its shape. The slicer determines how thick its walls should be,
+            how much infill to use, how many layers to create, and where
+            the printer should move while depositing filament.
+          </p>
+
+          <p>
+            The resulting instructions can then be saved in a format
+            supported by the target printer. Many FDM printers use G-code,
+            although workflows and supported file formats vary by machine.
+          </p>
+        </section>
+
+        <section id="workflow">
+          <h2>3. How Does Orca Slicer Work?</h2>
+
+          <p>
+            The typical workflow starts with a digital model and ends with
+            a file or job that the printer can process. The exact interface
+            can differ between software versions and printer profiles, but
+            the general stages remain similar.
+          </p>
+
+          <div class="mini-workflow" aria-label="3D printing workflow">
+            <div class="workflow-item">3D Model</div>
+            <span class="workflow-arrow">→</span>
+            <div class="workflow-item">Settings</div>
+            <span class="workflow-arrow">→</span>
+            <div class="workflow-item">Slicing</div>
+            <span class="workflow-arrow">→</span>
+            <div class="workflow-item">G-code</div>
+            <span class="workflow-arrow">→</span>
+            <div class="workflow-item">3D Print</div>
+          </div>
+
+          <h3>Step 1: Import a digital model</h3>
+
+          <p>
+            Begin with a compatible 3D model. Depending on the version and
+            workflow, common formats may include STL, 3MF, OBJ, and other
+            supported formats. Import the file into the workspace and check
+            that the object appears correctly on the virtual build plate.
+          </p>
+
+          <h3>Step 2: Select the printer and material</h3>
+
+          <p>
+            The printer profile describes relevant machine characteristics,
+            such as its build volume, nozzle configuration, and supported
+            capabilities. The filament profile stores material-related
+            settings, including temperatures and cooling parameters.
+            Choosing the correct profiles helps the slicer generate
+            appropriate instructions.
+          </p>
+
+          <h3>Step 3: Configure the print</h3>
+
+          <p>
+            Choose an appropriate process or print profile. This determines
+            settings such as layer height, wall count, infill, support
+            generation, and speed. Beginners can usually start with a
+            suitable preset and make adjustments only when their project
+            requires them.
+          </p>
+
+          <h3>Step 4: Slice and preview the model</h3>
+
+          <p>
+            When you slice a model, the software calculates the toolpaths
+            for the selected settings. Use the preview to inspect the
+            generated layers, check the placement of supports, and look
+            for unexpected gaps or other visible problems.
+          </p>
+
+          <h3>Step 5: Export or send the print job</h3>
+
+          <p>
+            Save the generated file in a format compatible with your printer,
+            or use a supported connection to send the job directly. Depending
+            on the machine, this may involve removable storage, a network
+            connection, or a manufacturer-specific workflow. Follow the
+            printer's documentation for transferring and starting a job.
+          </p>
+        </section>
+
+        <section id="features">
+          <h2>4. Main Features Beginners Should Know</h2>
+
+          <p>
+            Orca Slicer offers controls for both everyday printing and
+            more detailed calibration. You can begin with basic model
+            preparation and explore advanced tools after understanding
+            how your printer behaves.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature">
+              <div class="feature-icon">01</div>
+              <h3>Printer profiles</h3>
+              <p>
+                Profiles store machine-related information so the software
+                can prepare instructions for a compatible printer. Always
+                check that the selected profile matches your hardware.
+              </p>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">02</div>
+              <h3>Filament profiles</h3>
+              <p>
+                Material presets provide settings for different filaments,
+                including temperature and cooling parameters. Actual
+                requirements depend on the manufacturer's recommendations.
+              </p>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">03</div>
+              <h3>Layer preview</h3>
+              <p>
+                Previewing the sliced model helps you inspect the planned
+                toolpaths, layer structure, supports, and internal fill
+                before committing material to a print.
+              </p>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">04</div>
+              <h3>Support settings</h3>
+              <p>
+                Support structures help hold up overhanging parts that
+                cannot be printed reliably without additional material
+                underneath them.
+              </p>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">05</div>
+              <h3>Calibration tools</h3>
+              <p>
+                Built-in tests can help users evaluate flow rate, pressure
+                advance, temperature, retraction, and other characteristics
+                when the printer or material needs tuning.
+              </p>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">06</div>
+              <h3>Detailed print control</h3>
+              <p>
+                Users can adjust settings for walls, infill, speed, cooling,
+                and other print features to balance appearance, strength,
+                material consumption, and production time.
+              </p>
+            </div>
+          </div>
+
+          <p>
+            Not every feature is available for every printer. Some options
+            depend on the selected machine profile, firmware, material
+            configuration, or software version. If a setting is unavailable,
+            consult the documentation for your specific setup rather than
+            assuming that your printer supports it.
+          </p>
+        </section>
+
+        <section id="installation">
+          <h2>5. Installation and Initial Setup</h2>
+
+          <p>
+            Before installing a slicer, check that your computer meets the
+            software's requirements and that you can identify your printer's
+            exact model. The correct installation package and printer profile
+            depend on your operating system and hardware.
+          </p>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div>
+                <h3>Choose a trusted download source</h3>
+                <p>
+                  Obtain the software from the project's verified official
+                  website or release repository. Avoid unfamiliar download
+                  mirrors that may bundle unrelated applications or modified
+                  installers.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+              <div>
+                <h3>Select the correct operating system package</h3>
+                <p>
+                  Choose the appropriate build for Windows, macOS, or Linux.
+                  Pay attention to processor architecture and installation
+                  instructions when selecting a package.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+              <div>
+                <h3>Run the setup process</h3>
+                <p>
+                  Follow the installation instructions for your operating
+                  system. Launch the program after installation and review
+                  the initial configuration options.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">4</div>
+              <div>
+                <h3>Choose your printer profile</h3>
+                <p>
+                  Select your exact supported printer or a documented
+                  compatible configuration. Do not choose a similar-looking
+                  printer profile simply because it is available.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">5</div>
+              <div>
+                <h3>Confirm your filament and nozzle settings</h3>
+                <p>
+                  Check the nozzle diameter, filament type, and relevant
+                  material recommendations. Save the configuration before
+                  preparing your first model.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <strong>Important:</strong> Use the correct printer profile.
+            Incorrect machine dimensions, nozzle information, or start
+            and end G-code can lead to failed prints or unexpected machine
+            behaviour. Review unfamiliar machine-specific instructions
+            before running a job.
+          </div>
+        </section>
+
+        <section id="first-print">
+          <h2>6. How to Prepare Your First 3D Print</h2>
+
+          <p>
+            Your first project should be relatively simple. A small test
+            object or basic geometric model makes it easier to identify
+            problems without wasting a large amount of filament. A complex
+            model with delicate supports, tiny details, and multiple parts
+            can introduce too many variables for a beginner.
+          </p>
+
+          <h3>Start with a simple model</h3>
+
+          <p>
+            Choose a model that fits comfortably within the printer's build
+            volume. Import it and check its position on the virtual plate.
+            If the model is too large or too small, use the scale controls
+            to adjust its dimensions. Uniform scaling preserves the model's
+            proportions, which is generally useful for ordinary objects.
+          </p>
+
+          <h3>Choose a suitable orientation</h3>
+
+          <p>
+            The direction in which an object sits on the build plate can
+            influence its surface finish, support requirements, print time,
+            and mechanical strength. A broad, flat surface often provides
+            a useful starting point because it may improve first-layer
+            contact. However, the best orientation depends on the shape
+            and intended use of the object.
+          </p>
+
+          <h3>Review the basic print settings</h3>
+
+          <p>
+            Select a suitable layer height, wall count, infill setting,
+            and material profile. If the model includes unsupported
+            overhangs, examine whether supports are needed. Avoid increasing
+            print speed simply to shorten the estimated completion time:
+            the printer and material must be able to handle the chosen
+            settings reliably.
+          </p>
+
+          <h3>Slice and inspect</h3>
+
+          <p>
+            Generate the toolpaths and switch to the preview. Check whether
+            the complete model is represented, whether supports appear
+            where expected, and whether the estimated material usage and
+            print time are reasonable. The preview is an opportunity to
+            catch obvious setup mistakes before the printer begins moving.
+          </p>
+
+          <h3>Print and evaluate the result</h3>
+
+          <p>
+            Transfer the file or send it through a supported connection.
+            Before starting, confirm that the build plate is prepared,
+            the correct filament is loaded, and the printer is operating
+            normally. After the print finishes, inspect the first layer,
+            overall shape, visible surface quality, and dimensional fit.
+          </p>
+
+          <p>
+            If the print fails, change one relevant setting at a time
+            and repeat a suitable test. Keeping notes about the profile,
+            material, and adjustments makes it easier to understand
+            which changes actually improved the result.
+          </p>
+        </section>
+
+        <section id="settings">
+          <h2>7. Important Orca Slicer Settings Explained</h2>
+
+          <p>
+            A slicer contains many settings, but beginners can learn the
+            most useful ones first. There is no single configuration that
+            produces the best result for every printer, filament, and model.
+            The values below explain what the settings do rather than
+            prescribing universal numbers.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Setting</th>
+                  <th>What it controls</th>
+                  <th>Why it matters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Layer height</td>
+                  <td>The vertical thickness of each printed layer.</td>
+                  <td>Affects surface detail, print time, and layer appearance.</td>
+                </tr>
+                <tr>
+                  <td>Wall loops</td>
+                  <td>The number of perimeter walls around the object.</td>
+                  <td>Influences shell thickness and structural behaviour.</td>
+                </tr>
+                <tr>
+                  <td>Infill density</td>
+                  <td>The amount of internal fill used in many solid parts.</td>
+                  <td>Can affect weight, material use, and internal support.</td>
+                </tr>
+                <tr>
+                  <td>Print speed</td>
+                  <td>The speed of selected printing movements.</td>
+                  <td>Can affect production time and print quality.</td>
+                </tr>
+                <tr>
+                  <td>Nozzle temperature</td>
+                  <td>The temperature used to melt and extrude filament.</td>
+                  <td>Must suit the material and printer capabilities.</td>
+                </tr>
+                <tr>
+                  <td>Bed temperature</td>
+                  <td>The temperature of a heated build surface, if fitted.</td>
+                  <td>Can influence first-layer adhesion and warping.</td>
+                </tr>
+                <tr>
+                  <td>Supports</td>
+                  <td>Temporary structures beneath certain overhangs.</td>
+                  <td>Help print difficult shapes but use additional material.</td>
+                </tr>
+                <tr>
+                  <td>Retraction</td>
+                  <td>Filament movement used during certain travel moves.</td>
+                  <td>Can help manage stringing when properly calibrated.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Layer height and surface quality</h3>
+
+          <p>
+            Smaller layer heights can produce finer vertical detail but
+            generally require more layers and can increase print time.
+            Larger layer heights may speed up suitable prints, although
+            they can make layer lines more noticeable or reduce detail
+            in certain shapes. The appropriate range depends on nozzle
+            size and printer capabilities.
+          </p>
+
+          <h3>Infill and wall thickness</h3>
+
+          <p>
+            Infill creates an internal structure in many printed objects.
+            Higher infill is not automatically the best choice for every
+            part. Wall thickness, object geometry, infill pattern, and
+            intended loads all influence strength. Functional parts may
+            need testing and engineering judgment rather than relying on
+            infill percentage alone.
+          </p>
+
+          <h3>Speed and temperature</h3>
+
+          <p>
+            Print speed and temperature must work together with the
+            filament's properties and the printer's extrusion capabilities.
+            Raising speed without considering material flow and cooling
+            may result in weak layers, inconsistent extrusion, or poor
+            surface quality. Begin with an appropriate profile and use
+            calibration tests when adjustments are necessary.
+          </p>
+        </section>
+
+        <section id="materials">
+          <h2>8. Understanding Filaments and Material Profiles</h2>
+
+          <p>
+            The filament is the material that a printer melts and deposits
+            to build an object. Different materials have different processing
+            requirements, so selecting the right filament profile is an
+            important part of preparing a print.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Material</th>
+                  <th>General characteristics</th>
+                  <th>What beginners should consider</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>PLA</td>
+                  <td>Commonly used for decorative objects and general-purpose models.</td>
+                  <td>Often a practical starting material; follow the spool's recommendations.</td>
+                </tr>
+                <tr>
+                  <td>PETG</td>
+                  <td>Often used for parts that need a different balance of toughness and flexibility.</td>
+                  <td>May require attention to stringing, cooling, and bed adhesion.</td>
+                </tr>
+                <tr>
+                  <td>ABS</td>
+                  <td>Can be useful for applications requiring particular mechanical and thermal properties.</td>
+                  <td>Temperature control, ventilation, and enclosure requirements matter.</td>
+                </tr>
+                <tr>
+                  <td>TPU</td>
+                  <td>A flexible material used for certain bendable objects.</td>
+                  <td>Compatibility and extrusion settings depend on the printer design.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>
+            This table provides general guidance, not a guarantee that
+            every printer can use every material. Check the manufacturer's
+            specifications for your machine and filament. Some materials
+            require specialised equipment, an enclosure, suitable ventilation,
+            or additional safety precautions.
+          </p>
+
+          <p>
+            A filament profile may include nozzle and bed temperatures,
+            cooling behaviour, flow settings, and maximum volumetric speed.
+            Start with a profile that matches your actual filament and
+            confirm that the recommended conditions are compatible with
+            your printer.
+          </p>
+        </section>
+
+        <section id="calibration">
+          <h2>9. Why Calibration Matters</h2>
+
+          <p>
+            Calibration helps users evaluate how their printer and filament
+            behave under particular conditions. Even when a preset provides
+            a useful starting point, differences between machines, materials,
+            and operating conditions can affect the final print.
+          </p>
+
+          <h3>Flow rate</h3>
+
+          <p>
+            Flow settings influence how much material is extruded relative
+            to the toolpath. An unsuitable value can contribute to
+            under-extrusion or over-extrusion. Use the calibration approach
+            recommended by the software and printer documentation rather
+            than making large adjustments based on appearance alone.
+          </p>
+
+          <h3>Pressure advance</h3>
+
+          <p>
+            On supported systems, pressure advance compensates for changes
+            in extrusion pressure as the printer accelerates or slows down.
+            Appropriate calibration may improve corners and transitions,
+            but the available method and settings depend on the firmware
+            and machine.
+          </p>
+
+          <h3>Temperature and retraction</h3>
+
+          <p>
+            Temperature tests can help identify a useful printing range
+            for a particular filament. Retraction tests can help evaluate
+            stringing during travel movements. These experiments are most
+            useful when you change one variable at a time and record the
+            conditions that produced each result.
+          </p>
+
+          <div class="info-box">
+            <strong>Good practice:</strong> Calibration is not a requirement
+            to adjust every available setting before your first print.
+            Start with a suitable profile, identify a real issue, and use
+            a relevant test to investigate it.
+          </div>
+        </section>
+
+        <section id="advantages">
+          <h2>10. Benefits and Limitations of Orca Slicer</h2>
+
+          <h3>Potential benefits</h3>
+
+          <ul>
+            <li>
+              <strong>Accessible starting point:</strong> Compatible presets
+              can reduce the amount of manual configuration needed for
+              supported printers.
+            </li>
+            <li>
+              <strong>Detailed controls:</strong> Users can adjust many
+              aspects of the printing process as their experience grows.
+            </li>
+            <li>
+              <strong>Calibration tools:</strong> Built-in tests can help
+              investigate common extrusion and material-setting questions.
+            </li>
+            <li>
+              <strong>Layer preview:</strong> Reviewing toolpaths helps
+              users understand how a model will be constructed.
+            </li>
+            <li>
+              <strong>Open-source development:</strong> The project is
+              developed openly, allowing community contributions and
+              inspection of its source code.
+            </li>
+          </ul>
+
+          <h3>Limitations to understand</h3>
+
+          <ul>
+            <li>
+              <strong>Learning curve:</strong> Advanced controls may be
+              confusing until users understand basic 3D printing concepts.
+            </li>
+            <li>
+              <strong>Hardware compatibility:</strong> Features and
+              connection methods vary by printer, firmware, and profile.
+            </li>
+            <li>
+              <strong>Settings still matter:</strong> Software cannot
+              automatically compensate for every mechanical problem,
+              poor filament condition, or incorrect machine configuration.
+            </li>
+            <li>
+              <strong>Results vary:</strong> A successful profile for one
+              printer and filament combination may not produce the same
+              result on another setup.
+            </li>
+          </ul>
+
+          <p>
+            Orca Slicer is one option in the wider ecosystem of 3D printing
+            software. The best slicer for an individual depends on printer
+            compatibility, workflow preferences, available features, and
+            the user's familiarity with the tools.
+          </p>
+        </section>
+
+        <section id="mistakes">
+          <h2>11. Common Mistakes Beginners Should Avoid</h2>
+
+          <h3>Using the wrong printer profile</h3>
+
+          <p>
+            A profile for a different machine may contain incorrect build
+            dimensions, nozzle information, or machine instructions. Verify
+            the model and configuration before generating a print file.
+          </p>
+
+          <h3>Changing too many settings at once</h3>
+
+          <p>
+            If several values change simultaneously, it becomes difficult
+            to identify which adjustment caused an improvement or failure.
+            Establish a baseline, change one relevant variable, and compare
+            the results under similar conditions.
+          </p>
+
+          <h3>Skipping the preview</h3>
+
+          <p>
+            Slicing a model does not guarantee that the planned print is
+            suitable. Inspect the layer preview, supports, object placement,
+            and estimated material usage before sending the job.
+          </p>
+
+          <h3>Assuming higher speed is always better</h3>
+
+          <p>
+            Faster settings can reduce production time, but they may also
+            place greater demands on extrusion, acceleration, and cooling.
+            Select speeds that are appropriate for the printer, material,
+            and desired result.
+          </p>
+
+          <h3>Ignoring material requirements</h3>
+
+          <p>
+            Filaments differ in their temperature, cooling, adhesion, and
+            handling requirements. Check the material specifications and
+            store filament according to its manufacturer's recommendations.
+          </p>
+
+          <h3>Downloading installers from unknown sources</h3>
+
+          <p>
+            Unverified installers may be outdated, modified, or unsafe.
+            Obtain software from trusted project sources and check that
+            the release matches your operating system.
+          </p>
+        </section>
+
+        <section id="faq">
+          <h2>12. Frequently Asked Questions</h2>
+
+          <div class="faq-item">
+            <h3>Is Orca Slicer suitable for beginners?</h3>
+            <p>
+              Yes. Beginners can start with a supported printer profile,
+              a suitable filament preset, and basic slicing settings.
+              More advanced features can be explored as printing experience
+              develops.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Is Orca Slicer free?</h3>
+            <p>
+              Orca Slicer is free and open-source software. Check the
+              project's official distribution and licensing information
+              for the current release and terms.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>What does a slicer do in 3D printing?</h3>
+            <p>
+              A slicer divides a 3D model into layers, calculates printer
+              movements and extrusion paths, applies material and machine
+              settings, and generates instructions that a compatible
+              printer can process.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>What is G-code?</h3>
+            <p>
+              G-code is a family of machine-control instructions used by
+              many 3D printers. Depending on the printer and firmware,
+              it can describe movements, extrusion, temperatures, and
+              other operations needed for a print.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Which settings should a beginner change first?</h3>
+            <p>
+              Start by understanding layer height, wall count, infill,
+              supports, speed, and material temperatures. Use a suitable
+              preset as your baseline and change settings only when the
+              project or a specific print problem calls for it.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can Orca Slicer work with every 3D printer?</h3>
+            <p>
+              No slicer should be assumed to support every printer.
+              Compatibility depends on available profiles, firmware,
+              supported workflows, and machine requirements. Verify
+              support for your exact model before configuring a print.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Do I need to calibrate everything before my first print?</h3>
+            <p>
+              Not necessarily. A compatible, well-configured preset can
+              provide a starting point. Follow the printer manufacturer's
+              setup instructions, run required checks, and use additional
+              calibration tests when you encounter a relevant issue.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Why should I inspect the sliced preview?</h3>
+            <p>
+              The preview lets you inspect layer paths, supports, and
+              the planned construction of the object. It can reveal
+              some setup issues before printing, although it cannot
+              predict every possible mechanical or material problem.
+            </p>
+          </div>
+        </section>
+
+        <section class="final-box">
+          <h2>Conclusion</h2>
+
+          <p>
+            Orca Slicer is a versatile tool for converting digital models
+            into instructions for compatible 3D printers. Its main workflow
+            involves selecting the correct machine and material profiles,
+            configuring print settings, slicing the model, inspecting the
+            preview, and exporting or sending the resulting job.
+          </p>
+
+          <p>
+            Beginners can make steady progress by starting with simple
+            models and suitable presets. Understanding layer height,
+            walls, infill, temperature, supports, and speed will make
+            it easier to recognise the causes of common printing issues.
+            More advanced calibration tools can be introduced when
+            a specific need arises.
+          </p>
+
+          <p>
+            The most useful approach is to learn the purpose of each
+            important setting, test changes carefully, and follow the
+            documentation for your printer and filament. This creates
+            a reliable foundation for more complex 3D printing projects.
+          </p>
+        </section>
+
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      This beginner's guide provides general educational information
+      about 3D printing and slicer software.
+    </p>
+    <p>
+      Always follow your printer manufacturer's instructions and the
+      material manufacturer's recommendations when preparing a print.
+    </p>
+  </footer>
+
+</body>
+</html>
